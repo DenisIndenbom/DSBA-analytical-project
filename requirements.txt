@@ -2,3 +2,4 @@ pandas~=2.2.3
 seaborn~=0.13.2
 numpy~=2.1.2
 pyarrow
+streamlit
