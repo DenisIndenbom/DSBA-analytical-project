@@ -23,4 +23,4 @@ data = load_data()
 data_load_state.text('')
 
 st.table(data.head())
-st.line_chart(data=data.groupby('year').agg({'magnitudo':'max'}), y='magnitudo', x_label='Year', y_label='Magnitude')
+st.line_chart(data=data.groupby('year').agg({'magnitudo': 'max'}), y='magnitudo', x_label='Year', y_label='Magnitude')
