@@ -88,3 +88,33 @@ hist(data['significance'], bins=np.arange(0., data['significance'].max(), 50), l
 hist(data['depth'], bins=np.arange(data['depth'].min(), data['depth'].max(), 50), log=True,
      title='Depth distribution',
      x_label='Depth')
+
+st.subheader('The trend of the quantile (80%) over time')
+
+center_title_h5('Quantile trend of magnitude')
+st.line_chart(data.groupby('year').agg({'magnitudo': lambda x: x.quantile(0.8)}), x_label='Year', y_label='Magnitudo')
+
+center_title_h5('Quantile trend of significance')
+st.line_chart(data.groupby('year').agg({'significance': lambda x: x.quantile(0.8)}), x_label='Year',
+              y_label='Significance')
+
+center_title_h5('Quantile trend of depth')
+st.line_chart(data.groupby('year').agg({'depth': lambda x: x.quantile(0.8)}), x_label='Year', y_label='Depth')
+
+st.subheader('The trend of the maximal value over time')
+
+center_title_h5('Max trend of magnitude')
+st.line_chart(data.groupby('year').agg({'magnitudo': 'max'}, x_label='Year', y_label='Magnitudo'))
+
+center_title_h5('Max trend of significance')
+st.line_chart(data.groupby('year').agg({'significance': 'max'}), x_label='Year',
+              y_label='Significance')
+
+center_title_h5('Max trend of depth')
+st.line_chart(data.groupby('year').agg({'depth': 'max'}), x_label='Year', y_label='Depth')
+
+st.header('Hypothesis')
+st.markdown('**Tsunamis are more destructive than earthquakes.**')
+st.markdown("""**Destructive definition**
+
+$destructive = \\log(\\max(1, magnitudo))*significance$""")
