@@ -4,3 +4,6 @@ numpy~=2.1.2
 pyarrow
 streamlit~=1.40.1
 matplotlib~=3.9.2
+fastapi~=0.115.5
+pydantic~=2.10.2
+python-dotenv~=1.0.1
