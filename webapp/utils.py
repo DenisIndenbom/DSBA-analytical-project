@@ -1,4 +1,4 @@
-import matplotlib.pyplot as plt
+import plotly.express as px
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -10,7 +10,7 @@ sns.set_style('darkgrid')
 
 
 @st.cache_data
-def load_data():
+def load_data() -> pd.DataFrame:
     df = pd.read_csv('./data/Earthquakes-1990-2023.csv', engine='pyarrow')
     df.drop_duplicates(keep='first', inplace=True)
 
@@ -25,27 +25,21 @@ def load_data():
     return df
 
 
-def center_title_h5(title):
+def center_title_h5(title: str) -> None:
     st.html(f'<h5 align="center"> {title} </h5>')
 
 
-def hist(df, bins=None, title='', x_label=None, y_label=None, log=False):
-    fig, ax = plt.subplots()
+def hist(df, bins: float = None, title: str = '', log: bool = False) -> None:
+    fig = px.histogram(df, nbins=bins, log_y=log)
 
-    plt.title(title)
-    plt.xlabel(x_label)
-    plt.ylabel(y_label)
+    fig.update_layout(title=title, showlegend=True)
 
-    ax.hist(df, bins=bins, log=log)
-
-    st.pyplot(fig)
+    st.plotly_chart(fig)
 
 
-def pie(df, title=''):
-    fig, ax = plt.subplots()
+def pie(df, title: str = '') -> None:
+    fig = px.pie(df, values=df.values.tolist(), names=df.index.tolist(), title=title)
 
-    plt.title(title)
+    fig.update_layout(title=title, showlegend=True)
 
-    ax.pie(df, labels=df.index.tolist())
-
-    st.pyplot(fig)
+    st.plotly_chart(fig)

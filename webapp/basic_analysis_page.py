@@ -45,15 +45,14 @@ st.bar_chart(data['year'][data['significance'] >= data['significance'].max() // 
 
 st.subheader('Distribution by magnitude, significance and depth')
 
-hist(data['magnitudo'], bins=np.arange(-3., 10., 0.5), log=True, title='Magnitude distribution',
-     x_label='Magnitude')
+center_title_h5('Magnitude distribution')
+hist(data['magnitudo'], bins=10, log=True)
 
-hist(data['significance'], bins=np.arange(0., data['significance'].max(), 50), log=True,
-     title='Significance distribution', x_label='Significance')
+center_title_h5('Significance distribution')
+hist(data['significance'], bins=50, log=True)
 
-hist(data['depth'], bins=np.arange(data['depth'].min(), data['depth'].max(), 50), log=True,
-     title='Depth distribution',
-     x_label='Depth')
+center_title_h5('Depth distribution')
+hist(data['depth'], bins=50, log=True)
 
 st.subheader('The trend of the quantile (80%) over time')
 

@@ -1,6 +1,6 @@
 import streamlit as st
 
-from utils import load_data, center_title_h5, pie
+from utils import load_data, center_title_h5, hist, pie
 
 data = load_data()
 
@@ -9,6 +9,17 @@ st.markdown('**Tsunamis are more destructive than earthquakes.**')
 st.markdown("""**Destructive definition**
 
 $destructive = \\log(\\max(1, magnitudo))*significance$""")
+
+st.subheader('Distribution')
+
+center_title_h5('Destructive distribution')
+hist(data['destructive'], bins=50, log=True)
+
+center_title_h5('Destructive distribution by earthquakes')
+hist(data['destructive'][data['tsunami'] == 0], bins=50, log=True)
+
+center_title_h5('Destructive distribution by tsunamis')
+hist(data['destructive'][data['tsunami'] == 1], bins=50, log=True)
 
 st.subheader('Analysis')
 
@@ -38,11 +49,14 @@ st.subheader('Some statistics for conclusion')
 
 tsunami = data[data['tsunami'] == 1]
 
-pie(tsunami['state'].value_counts().head(15), title='The number of tsunamis in different states')
-pie(tsunami[tsunami['destructive'] >= tsunami['destructive'].mean()]['state'].value_counts().head(15),
-    title='The number of significance tsunamis in different states')
-pie(tsunami[tsunami['destructive'] >= tsunami['destructive'].max() // 2]['state'].value_counts().head(15),
-    title='The number of destructive tsunamis in different states')
+center_title_h5(title='The number of tsunamis in different states')
+pie(tsunami['state'].value_counts().head(15), )
+
+center_title_h5(title='The number of significance tsunamis in different states')
+pie(tsunami[tsunami['destructive'] >= tsunami['destructive'].mean()]['state'].value_counts().head(15))
+
+center_title_h5(title='The number of destructive tsunamis in different states')
+pie(tsunami[tsunami['destructive'] >= tsunami['destructive'].max() // 2]['state'].value_counts().head(15))
 
 st.markdown("""
 ## Hypothesis has been proved
