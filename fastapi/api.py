@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pandas import read_csv
 
 from config import DATA_PATH
@@ -17,7 +17,10 @@ data = read_csv(DATA_PATH, engine='pyarrow')
 
 @app.get('/get_row/{index}')
 def get_row(index: int):
-    row = Row(index=index, **(data.iloc[index].to_dict()))
+    try:
+        row = Row(index=index, **(data.iloc[index].to_dict()))
+    except IndexError:
+        raise HTTPException(status_code=404, detail='Index out of range')
 
     return row
 
