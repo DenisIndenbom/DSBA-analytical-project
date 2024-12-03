@@ -27,6 +27,6 @@ def get_row(index: int):
 
 @app.post('/create_row')
 def get_row(row: RowCreate):
-    data.append(row.to_dict(), ignore_index=True)
+    data.loc[len(data)] = dict(row)
 
-    return {'index': len(data)}
+    return {'index': len(data) - 1}
