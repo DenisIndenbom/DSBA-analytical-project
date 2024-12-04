@@ -1,7 +1,7 @@
-import altair as alt
+import plotly.express as px
 import streamlit as st
 
-from utils import *
+from utils import load_data
 
 # Title
 st.title('Interactive Graphics')
@@ -18,7 +18,7 @@ st.sidebar.subheader('Chart Options')
 feature = st.sidebar.selectbox('Feature', ['No feature', 'magnitudo', 'significance', 'depth', 'destructive'])
 event_type = st.sidebar.selectbox('Event Type', ['Earthquake & Tsunami', 'Earthquake', 'Tsunami'])
 
-chart = None
+fig = None
 
 if chart_type != 'Not selected':
     data = load_data()
@@ -46,22 +46,26 @@ if chart_type != 'Not selected':
     states = st.sidebar.slider('Number of states', min_value=1, max_value=40, step=1, value=10)
 
     if chart_type == 'Bar Chart':
-        chart = alt.Chart(df.head(states)).mark_bar(size=15).encode(
-            x=alt.X('state', title='State'),
-            y=alt.Y('count', title='Count')
+        fig = px.bar(
+            df.head(states),
+            x='state',
+            y='count',
+            labels={'state':'State', 'count':'Count'}
         )
+
+        fig.update_traces(width=0.8)
     elif chart_type == 'Pie Chart':
-        chart = alt.Chart(df.head(states)).mark_arc().encode(
-            theta=alt.Theta(field='count', type='quantitative'),
-            color=alt.Color(field='state', type='nominal'),
-            tooltip=['state', 'count']
+        fig = px.pie(
+            df.head(states),
+            names='state',
+            values='count',
         )
 
 # Display chart
-if chart is not None:
-    chart = chart.properties(
+if fig is not None:
+    fig = fig.update_layout(
         title=f'Number of {event_type} events' + (f' filtered by {feature}' if feature != 'No feature' else ''))
 
-    st.altair_chart(chart, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True)
 else:
     st.markdown('*Choose a chart!*')

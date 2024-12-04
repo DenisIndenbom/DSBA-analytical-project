@@ -1,7 +1,7 @@
-import altair as alt
+import plotly.express as px
 import streamlit as st
 
-from utils import *
+from utils import load_data
 
 # Title
 st.title('Interactive Graphics')
@@ -15,7 +15,7 @@ chart_type = st.sidebar.selectbox(
 
 data = load_data()
 
-chart = None
+fig = None
 
 # Conditional input fields for chart-specific options
 if chart_type == 'Line Chart':
@@ -24,12 +24,15 @@ if chart_type == 'Line Chart':
 
     st.sidebar.subheader('Line Chart Options')
     agg_function = st.sidebar.selectbox('Aggregate functions', ['mean', 'median', 'max'])
-    df = data.groupby('year').agg({y_axis: agg_function}).reset_index()
+    df = data.groupby('year').agg({y_axis:agg_function}).reset_index()
 
-    chart = alt.Chart(df).mark_line().encode(
-        x=alt.X('year', title='Year'),
-        y=alt.Y(y_axis, title=y_axis)
-    ).properties(title=f'Trend of {agg_function} {y_axis}')
+    fig = px.line(
+        df,
+        x='year',
+        y=y_axis,
+        title=f'Trend of {agg_function} {y_axis}',
+        labels={'year':'Year', y_axis:y_axis}
+    )
 
 elif chart_type == 'Bar Chart':
     st.sidebar.subheader('Bar Chart Options')
@@ -47,13 +50,18 @@ elif chart_type == 'Bar Chart':
     else:
         df = data['year'].value_counts(sort=False).reset_index()
 
-    chart = alt.Chart(df).mark_bar(size=15).encode(
-        x=alt.X('year', title='Year'),
-        y=alt.Y('count', title='Count')
-    ).properties(title=f'Number of earthquake events' + (f' filtered by {feature}' if feature != 'No feature' else ''))
+    fig = px.bar(
+        df,
+        x='year',
+        y='count',
+        title=f"Number of earthquake events" + (f" filtered by {feature}" if feature != 'No feature' else ''),
+        labels={'year':'Year', 'count':'Count'}
+    )
+
+    fig.update_traces(width=0.8)
 
 # Display chart
-if chart is not None:
-    st.altair_chart(chart, use_container_width=True)
+if fig is not None:
+    st.plotly_chart(fig, use_container_width=True)
 else:
     st.markdown('*Choose a chart!*')

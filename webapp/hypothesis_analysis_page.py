@@ -13,13 +13,13 @@ st.subheader('Distribution')
 data = load_data()
 
 center_title_h5('Destructive distribution')
-hist(data['destructive'].reset_index(), 'destructive', bins=50, log=True)
+hist(data['destructive'], bins=50, log=True)
 
 center_title_h5('Destructive distribution by earthquakes')
-hist(data['destructive'][data['tsunami'] == 0].reset_index(), 'destructive', bins=50, log=True)
+hist(data['destructive'][data['tsunami'] == 0], bins=50, log=True)
 
 center_title_h5('Destructive distribution by tsunamis')
-hist(data['destructive'][data['tsunami'] == 1].reset_index(), 'destructive', bins=50, log=True)
+hist(data['destructive'][data['tsunami'] == 1], bins=50, log=True)
 
 st.subheader('Analysis')
 
