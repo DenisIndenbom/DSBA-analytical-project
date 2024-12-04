@@ -8,7 +8,7 @@ data_load_state = st.text('Loading data...')
 data = load_data()
 data_load_state.text('')
 
-st.dataframe(data.head(1000), use_container_width=True)
+st.dataframe(data.head(100), use_container_width=True)
 
 st.header('Plots and analysis')
 
@@ -45,34 +45,34 @@ st.bar_chart(data['year'][data['significance'] >= data['significance'].max() // 
 st.subheader('Distribution by magnitude, significance and depth')
 
 center_title_h5('Magnitude distribution')
-hist(data['magnitudo'], bins=10, log=True)
+hist(data['magnitudo'].reset_index(), 'magnitudo', bins=20, log=True)
 
 center_title_h5('Significance distribution')
-hist(data['significance'], bins=50, log=True)
+hist(data['significance'].reset_index(), 'significance', bins=50, log=True)
 
 center_title_h5('Depth distribution')
-hist(data['depth'], bins=50, log=True)
+hist(data['depth'].reset_index(), 'depth', bins=50, log=True)
 
 st.subheader('The trend of the quantile (80%) over time')
 
 center_title_h5('Quantile trend of magnitude')
-st.line_chart(data.groupby('year').agg({'magnitudo': lambda x: x.quantile(0.8)}), x_label='Year', y_label='Magnitudo')
+st.line_chart(data.groupby('year').agg({'magnitudo':lambda x:x.quantile(0.8)}), x_label='Year', y_label='Magnitudo')
 
 center_title_h5('Quantile trend of significance')
-st.line_chart(data.groupby('year').agg({'significance': lambda x: x.quantile(0.8)}), x_label='Year',
+st.line_chart(data.groupby('year').agg({'significance':lambda x:x.quantile(0.8)}), x_label='Year',
               y_label='Significance')
 
 center_title_h5('Quantile trend of depth')
-st.line_chart(data.groupby('year').agg({'depth': lambda x: x.quantile(0.8)}), x_label='Year', y_label='Depth')
+st.line_chart(data.groupby('year').agg({'depth':lambda x:x.quantile(0.8)}), x_label='Year', y_label='Depth')
 
 st.subheader('The trend of the maximal value over time')
 
 center_title_h5('Max trend of magnitude')
-st.line_chart(data.groupby('year').agg({'magnitudo': 'max'}, x_label='Year', y_label='Magnitudo'))
+st.line_chart(data.groupby('year').agg({'magnitudo':'max'}, x_label='Year', y_label='Magnitudo'))
 
 center_title_h5('Max trend of significance')
-st.line_chart(data.groupby('year').agg({'significance': 'max'}), x_label='Year',
+st.line_chart(data.groupby('year').agg({'significance':'max'}), x_label='Year',
               y_label='Significance')
 
 center_title_h5('Max trend of depth')
-st.line_chart(data.groupby('year').agg({'depth': 'max'}), x_label='Year', y_label='Depth')
+st.line_chart(data.groupby('year').agg({'depth':'max'}), x_label='Year', y_label='Depth')

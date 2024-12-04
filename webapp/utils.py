@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
-import plotly.express as px
 import seaborn as sns
 import streamlit as st
+import altair as alt
 
 __all__ = ['load_data', 'center_title_h5', 'hist', 'pie']
 
@@ -32,7 +32,7 @@ def load_data() -> pd.DataFrame:
     df['month'] = df['date'].dt.month
     df['day'] = df['date'].dt.day
 
-    df['destructive'] = df['magnitudo'].apply(lambda x: np.log10(max(1, x))) * df['significance']
+    df['destructive'] = df['magnitudo'].apply(lambda x:np.log10(max(1, x))) * df['significance']
 
     return df
 
@@ -47,39 +47,47 @@ def center_title_h5(title: str) -> None:
     st.html(f'<h5 align="center"> {title} </h5>')
 
 
-def hist(df, bins: float = None, title: str = '', log: bool = False) -> None:
+def hist(df, field, bins: int = None, title: str = '', log: bool = False) -> None:
     """
-       Display a histogram of the data using Plotly in a Streamlit app.
+       Display a histogram of the data using Altair in a Streamlit app.
 
        Args:
            df (pd.DataFrame): The DataFrame containing the data to plot.
-           bins (float, optional): Number of bins for the histogram. Defaults to None.
+           field (str): The name of the column containing the data.
+           bins (int, optional): Number of bins for the histogram. Defaults to None.
            title (str, optional): Title of the histogram. Defaults to an empty string.
            log (bool, optional): Whether to use a logarithmic scale for the y-axis. Defaults to False.
 
        Returns:
            None:
     """
-    fig = px.histogram(df, nbins=bins, log_y=log)
+    if bins is None:
+        bins = 10
 
-    fig.update_layout(title=title, showlegend=True)
+    chart = alt.Chart(df).mark_bar().encode(
+        alt.X(f'{field}:Q', bin=alt.Bin(maxbins=bins), title=field),
+        alt.Y('count()', scale=alt.Scale(type='log' if log else 'linear'), title='Frequency')
+    ).properties(title=title)
 
-    st.plotly_chart(fig)
+    st.altair_chart(chart, use_container_width=True)
 
 
-def pie(df, title: str = '') -> None:
+def pie(df, categories_field, values_field, title: str = '') -> None:
     """
-        Display a pie chart of the data using Plotly in a Streamlit app.
+        Display a pie chart of the data using Altair in a Streamlit app.
 
         Args:
             df (pd.DataFrame): The DataFrame containing the data to plot. It should have an index (labels) and values.
             title (str, optional): Title of the pie chart. Defaults to an empty string.
+            categories_field (str): The field containing the categories to plot.
+            values_field (str): The field containing the values to plot.
 
         Returns:
             None: The function directly renders the plot in the Streamlit app.
     """
-    fig = px.pie(df, values=df.values.tolist(), names=df.index.tolist(), title=title)
+    chart = alt.Chart(df).mark_arc().encode(
+        theta=alt.Theta(field=values_field, type='quantitative'),
+        color=alt.Color(field=categories_field, type='nominal'),
+    ).properties(title=title)
 
-    fig.update_layout(title=title, showlegend=True)
-
-    st.plotly_chart(fig)
+    st.altair_chart(chart, use_container_width=True)
