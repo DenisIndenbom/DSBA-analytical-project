@@ -3,6 +3,14 @@ GET http://localhost:8000/get_row/1
 Content-Type: application/json
 
 ###
+GET http://localhost:8000/get_row/1000000000000000000000000000000000000000
+Content-Type: application/json
+
+###
+GET http://localhost:8000/get_row/3445751
+Content-Type: application/json
+
+###
 POST http://localhost:8000/create_row
 Content-Type: application/json
 
@@ -22,5 +30,20 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8000/get_row/{-1}
+POST http://localhost:8000/create_row
 Content-Type: application/json
+
+{
+  "time": "0",
+  "place": "",
+  "status": "",
+  "tsunami": 0,
+  "significance": 0,
+  "data_type": "",
+  "magnitudo": 0.0,
+  "state": "State",
+  "longitude": 0.0,
+  "latitude": 0.0,
+  "depth": "",
+  "date": {{$timestamp}}
+}
