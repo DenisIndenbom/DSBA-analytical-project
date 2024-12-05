@@ -50,7 +50,7 @@ if chart_type != 'Not selected':
             df.head(states),
             x='state',
             y='count',
-            labels={'state':'State', 'count':'Count'}
+            labels={'state': 'State', 'count': 'Count'}
         )
 
         fig.update_traces(width=0.8)

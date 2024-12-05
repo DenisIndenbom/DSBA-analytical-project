@@ -24,14 +24,14 @@ if chart_type == 'Line Chart':
 
     st.sidebar.subheader('Line Chart Options')
     agg_function = st.sidebar.selectbox('Aggregate functions', ['mean', 'median', 'max'])
-    df = data.groupby('year').agg({y_axis:agg_function}).reset_index()
+    df = data.groupby('year').agg({y_axis: agg_function}).reset_index()
 
     fig = px.line(
         df,
         x='year',
         y=y_axis,
         title=f'Trend of {agg_function} {y_axis}',
-        labels={'year':'Year', y_axis:y_axis}
+        labels={'year': 'Year', y_axis: y_axis}
     )
 
 elif chart_type == 'Bar Chart':
@@ -55,7 +55,7 @@ elif chart_type == 'Bar Chart':
         x='year',
         y='count',
         title=f"Number of earthquake events" + (f" filtered by {feature}" if feature != 'No feature' else ''),
-        labels={'year':'Year', 'count':'Count'}
+        labels={'year': 'Year', 'count': 'Count'}
     )
 
     fig.update_traces(width=0.8)
