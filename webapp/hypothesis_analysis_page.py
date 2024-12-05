@@ -24,23 +24,23 @@ hist(data['destructive'][data['tsunami'] == 1], bins=50, log=True)
 st.subheader('Analysis')
 
 center_title_h5('Mean of destructive')
-st.bar_chart(data.groupby('tsunami').agg({'destructive':'mean'}), x_label='Tsunami', y_label='Destructive')
+st.bar_chart(data.groupby('tsunami').agg({'destructive': 'mean'}), x_label='Tsunami', y_label='Destructive')
 st.markdown('*As we can see, on average tsunami is more destructive than ordinary earthquakes.*')
 
 center_title_h5('Quantile (50%) of destructive')
-st.bar_chart(data.groupby('tsunami').agg({'destructive':lambda x:x.quantile(0.5)}), x_label='Tsunami',
+st.bar_chart(data.groupby('tsunami').agg({'destructive': lambda x: x.quantile(0.5)}), x_label='Tsunami',
              y_label='Destructive')
 st.markdown(
     '*Here we see, 50 percent of tsunamis are more destructive than earthquakes. Also, we see that destructive of 50 '
     'percent of earthquakes less than 50 points.*')
 
 center_title_h5('Quantile (90%) of destructive')
-st.bar_chart(data.groupby('tsunami').agg({'destructive':lambda x:x.quantile(0.9)}), x_label='Tsunami',
+st.bar_chart(data.groupby('tsunami').agg({'destructive': lambda x: x.quantile(0.9)}), x_label='Tsunami',
              y_label='Destructive')
 st.markdown('*In this case, the 10 percent of tsunamis are more destructive than earthquakes*')
 
 center_title_h5('Maximal value of destructive')
-st.bar_chart(data.groupby('tsunami').agg({'destructive':'max'}), x_label='Tsunami', y_label='Destructive')
+st.bar_chart(data.groupby('tsunami').agg({'destructive': 'max'}), x_label='Tsunami', y_label='Destructive')
 st.markdown(
     '*The most destructive of the recorded tsunamis was more powerful than the most destructive of the recorded '
     'earthquakes.*')
