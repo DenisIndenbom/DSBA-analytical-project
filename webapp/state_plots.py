@@ -17,6 +17,8 @@ st.sidebar.subheader('Chart Options')
 
 feature = st.sidebar.selectbox('Feature', ['No feature', 'magnitudo', 'significance', 'depth', 'destructive'])
 event_type = st.sidebar.selectbox('Event Type', ['Earthquake & Tsunami', 'Earthquake', 'Tsunami'])
+period = st.sidebar.slider('Time period', min_value=1990, max_value=2023, value=(1990, 2023), step=1)
+states = st.sidebar.slider('Number of states', min_value=2, max_value=25, step=1, value=10)
 
 fig = None
 
@@ -30,6 +32,8 @@ if chart_type != 'Not selected':
     else:
         df = data
 
+    df = df[(df['year'] >= period[0]) & (df['year'] <= period[1])]
+
     if feature != 'No feature':
         threshold = st.sidebar.slider('Threshold',
                                       value=float(data[feature].mean()),
@@ -42,8 +46,6 @@ if chart_type != 'Not selected':
         df = df['state']
 
     df = df.value_counts().reset_index()
-
-    states = st.sidebar.slider('Number of states', min_value=1, max_value=40, step=1, value=10)
 
     if chart_type == 'Bar Chart':
         fig = px.bar(

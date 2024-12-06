@@ -1,6 +1,6 @@
 import streamlit as st
 
-from utils import load_data, center_title_h5, hist, pie
+from utils import load_data, center_title_h5, hist_chart, bar_chart, pie_chart
 
 st.title('Hypothesis')
 st.markdown('**Tsunamis are more destructive than earthquakes.**')
@@ -13,34 +13,34 @@ st.subheader('Distribution')
 data = load_data()
 
 center_title_h5('Destructive distribution')
-hist(data['destructive'], bins=50, log=True)
+hist_chart(data['destructive'], bins=50, log=True)
 
 center_title_h5('Destructive distribution by earthquakes')
-hist(data['destructive'][data['tsunami'] == 0], bins=50, log=True)
+hist_chart(data['destructive'][data['tsunami'] == 0], bins=50, log=True)
 
 center_title_h5('Destructive distribution by tsunamis')
-hist(data['destructive'][data['tsunami'] == 1], bins=50, log=True)
+hist_chart(data['destructive'][data['tsunami'] == 1], bins=50, log=True)
 
 st.subheader('Analysis')
 
 center_title_h5('Mean of destructive')
-st.bar_chart(data.groupby('tsunami').agg({'destructive': 'mean'}), x_label='Tsunami', y_label='Destructive')
+bar_chart(data.groupby('tsunami').agg({'destructive': 'mean'}), x_label='Tsunami', y_label='Destructive')
 st.markdown('*As we can see, on average tsunami is more destructive than ordinary earthquakes.*')
 
 center_title_h5('Quantile (50%) of destructive')
-st.bar_chart(data.groupby('tsunami').agg({'destructive': lambda x: x.quantile(0.5)}), x_label='Tsunami',
-             y_label='Destructive')
+bar_chart(data.groupby('tsunami').agg({'destructive': lambda x: x.quantile(0.5)}), x_label='Tsunami',
+          y_label='Destructive')
 st.markdown(
     '*Here we see, 50 percent of tsunamis are more destructive than earthquakes. Also, we see that destructive of 50 '
     'percent of earthquakes less than 50 points.*')
 
 center_title_h5('Quantile (90%) of destructive')
-st.bar_chart(data.groupby('tsunami').agg({'destructive': lambda x: x.quantile(0.9)}), x_label='Tsunami',
-             y_label='Destructive')
+bar_chart(data.groupby('tsunami').agg({'destructive': lambda x: x.quantile(0.9)}), x_label='Tsunami',
+          y_label='Destructive')
 st.markdown('*In this case, the 10 percent of tsunamis are more destructive than earthquakes*')
 
 center_title_h5('Maximal value of destructive')
-st.bar_chart(data.groupby('tsunami').agg({'destructive': 'max'}), x_label='Tsunami', y_label='Destructive')
+bar_chart(data.groupby('tsunami').agg({'destructive': 'max'}), x_label='Tsunami', y_label='Destructive')
 st.markdown(
     '*The most destructive of the recorded tsunamis was more powerful than the most destructive of the recorded '
     'earthquakes.*')
@@ -50,14 +50,16 @@ st.subheader('Some statistics for conclusion')
 tsunami = data[data['tsunami'] == 1]
 
 center_title_h5(title='The number of tsunamis in different states')
-pie(tsunami['state'].value_counts().head(15).reset_index(), 'state', 'count')
+pie_chart(tsunami['state'].value_counts().head(15).reset_index(), 'state', 'count')
 
 center_title_h5(title='The number of significance tsunamis in different states')
-pie(tsunami[tsunami['destructive'] >= tsunami['destructive'].mean()]['state'].value_counts().head(15).reset_index(),
+pie_chart(
+    tsunami[tsunami['destructive'] >= tsunami['destructive'].mean()]['state'].value_counts().head(15).reset_index(),
     'state', 'count')
 
 center_title_h5(title='The number of destructive tsunamis in different states')
-pie(tsunami[tsunami['destructive'] >= tsunami['destructive'].max() // 2]['state'].value_counts().head(15).reset_index(),
+pie_chart(
+    tsunami[tsunami['destructive'] >= tsunami['destructive'].max() // 2]['state'].value_counts().head(15).reset_index(),
     'state', 'count')
 
 st.markdown("""
