@@ -29,14 +29,14 @@ def get_row(index: int) -> Row:
 
 
 @app.post('/create_row')
-def get_row(row: RowCreate) -> Row:
+def create_row(row: RowCreate) -> Row:
     data.loc[len(data)] = dict(row)
 
-    return {'index':len(data) - 1}
+    return {'index': len(data) - 1}
 
 
 @app.get("/health")
-async def health_check():
+async def health_check() -> str:
     return 'ok'
 
 
