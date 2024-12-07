@@ -23,9 +23,9 @@ def load_data() -> pd.DataFrame:
         Returns:
             pd.DataFrame: A preprocessed DataFrame with additional columns.
     """
-    from config import DATA_PATH
+    from config import DATA_PATH, FEATHER_FORMAT
 
-    df = pd.read_csv(DATA_PATH, engine='pyarrow')
+    df = pd.read_csv(DATA_PATH, engine='pyarrow') if not FEATHER_FORMAT else pd.read_feather(DATA_PATH)
     df.drop_duplicates(keep='first', inplace=True)
 
     df['date'] = pd.to_datetime(df['date'], format='mixed')
