@@ -13,12 +13,12 @@ chart_type = st.sidebar.selectbox(
     ['Not selected', 'Line Chart', 'Bar Chart']
 )
 
-data = load_data()
-
 fig = None
 
 # Conditional input fields for chart-specific options
 if chart_type == 'Line Chart':
+    data = load_data()
+
     st.sidebar.subheader('Common Options')
     y_axis = st.sidebar.selectbox('Choose Y-axis', ['magnitudo', 'significance', 'depth', 'destructive'])
 
@@ -35,6 +35,8 @@ if chart_type == 'Line Chart':
     )
 
 elif chart_type == 'Bar Chart':
+    data = load_data()
+
     st.sidebar.subheader('Bar Chart Options')
 
     feature = st.sidebar.selectbox('Feature', ['No feature', 'magnitudo', 'significance', 'depth', 'destructive'])
