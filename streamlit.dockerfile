@@ -8,7 +8,11 @@ RUN apt-get update && apt-get install -y \
     software-properties-common \
     && rm -rf /var/lib/apt/lists/
 
-COPY ./ ./
+COPY ./webapp ./webapp
+COPY ./README.md ./README.md
+COPY ./requirements.txt ./requirements.txt
+COPY ./data ./data
+
 RUN pip3 install -r requirements.txt
 
 EXPOSE 8501
