@@ -23,8 +23,9 @@ def load_data() -> pd.DataFrame:
         Returns:
             pd.DataFrame: A preprocessed DataFrame with additional columns.
     """
+    from config import DATA_PATH
 
-    df = pd.read_csv('./data/Earthquakes-1990-2023.csv', engine='pyarrow')
+    df = pd.read_csv(DATA_PATH, engine='pyarrow')
     df.drop_duplicates(keep='first', inplace=True)
 
     df['date'] = pd.to_datetime(df['date'], format='mixed')
@@ -33,7 +34,7 @@ def load_data() -> pd.DataFrame:
     df['month'] = df['date'].dt.month
     df['day'] = df['date'].dt.day
 
-    df['destructive'] = df['magnitudo'].apply(lambda x: np.log10(max(1, x))) * df['significance']
+    df['destructive'] = df['magnitudo'].apply(lambda x:np.log10(max(1, x))) * df['significance']
 
     return df
 
@@ -115,7 +116,7 @@ def hist_chart(series: pd.Series, bins: int = 10, title: str = '', log: bool = F
     """
 
     fig = px.histogram(
-        pd.DataFrame({'values': series}),
+        pd.DataFrame({'values':series}),
         x='values',
         nbins=bins,
         title=title,
