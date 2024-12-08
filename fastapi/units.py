@@ -33,3 +33,7 @@ class RowCreate(BaseModel):
     latitude: float
     depth: float
     date: datetime
+
+
+class NewRow(BaseModel):
+    index: int

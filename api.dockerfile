@@ -17,6 +17,6 @@ RUN pip3 install -r requirements.txt
 
 EXPOSE 8000
 
-HEALTHCHECK CMD curl --fail http://localhost:8000/health
+HEALTHCHECK CMD curl --fail http://localhost:8000/api/health
 
 ENTRYPOINT ["fastapi", "run", "fastapi/api.py"]

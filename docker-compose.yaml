@@ -1,13 +1,13 @@
 services:
   webapp:
     build:
-      dockerfile: streamlit.dockerfile
+      dockerfile: webapp.dockerfile
     container_name: webapp
     ports:
       - "8501:8501"
   api:
     build:
-      dockerfile: fastapi.dockerfile
+      dockerfile: api.dockerfile
     container_name: api
     ports:
       - "8000:8000"
