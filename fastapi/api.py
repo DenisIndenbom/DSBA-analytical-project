@@ -9,6 +9,7 @@ app = FastAPI(
     title='Earthquakes API',
     description='An API of earthquakes analysis project',
     version='1.0.0',
+    openapi_url='/api/openapi.json',
     docs_url='/api/docs',
     root_path_in_servers=False,
 )
